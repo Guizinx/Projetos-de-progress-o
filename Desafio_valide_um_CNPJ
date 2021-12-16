@@ -1,0 +1,43 @@
+import re
+
+REGRESSIVOS= [6,5,4,3,2,9,8,7,6,5,4,3,2]
+
+def somente_numeros(cnpj):
+    return re.sub(r'[^0-9]','',cnpj)
+
+
+def calculo(cnpj,digito):
+    if digito == 1:
+        regressivos = REGRESSIVOS[1:]
+        novo_cnpj = cnpj[:-2]
+    elif digito == 2:
+        regressivos = REGRESSIVOS
+        novo_cnpj= cnpj
+    else:
+        None
+    total=0
+    for indice,regressivo in enumerate(regressivos):
+        total += int(novo_cnpj[indice]) * regressivo
+
+    digito = 11 - (total%11)
+    digito = digito if digito <= 9 else 0
+
+    return f'{novo_cnpj}{digito}'
+
+
+def validacao(cnpj):
+    cnpj=somente_numeros(cnpj)
+    cnpj = calculo(cnpj,digito=1)
+    cnpj = calculo(cnpj, digito=2)
+    return cnpj
+
+cnpj=input(str('Digite seu cnpj:'))
+cnpj1=Desafio_valide_um_CNPJ.re.sub(r'[^0-9]','',cnpj)
+
+
+novo_cnpj = Desafio_valide_um_CNPJ.validacao(cnpj)
+
+if novo_cnpj == cnpj1:
+    print('Válido')
+else:
+    print('Invalido')
